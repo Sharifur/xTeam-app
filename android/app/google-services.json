@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "247440393966",
+    "project_id": "xteam-aa36d",
+    "storage_bucket": "xteam-aa36d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:247440393966:android:08c932b9eb749e8d8d95ff",
+        "android_client_info": {
+          "package_name": "com.xgenious.xteam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "247440393966-lbhfa32o022l96ubk7fg8jpjmj7scr0i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.xgenious.xteam",
+            "certificate_hash": "30a06d5b7db695bae46e802ba55c98cff7174e11"
+          }
+        },
+        {
+          "client_id": "247440393966-qvmt2bh364flptpnq3qbnsu9hrgcmg5t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.xgenious.xteam",
+            "certificate_hash": "6bcce48d491e775a0596cc33bba731e29833a5ca"
+          }
+        },
+        {
+          "client_id": "247440393966-6bh5m0752phk7lbbecnj5ibo58160861.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdo28AMSTGqzVLl-dQX7qzI7b5uISYXj8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "247440393966-6bh5m0752phk7lbbecnj5ibo58160861.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
