@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -13,7 +15,7 @@ import '/services/request_list_service.dart';
 import '/services/salary_info_service.dart';
 import '/services/sign_in_service.dart';
 import '/views/change_password_view/change_password_view.dart';
-import '/views/login_view.dart';
+import 'views/login_view/login_view.dart';
 import '/views/profile_edit_view/profile_edit_view.dart';
 import '/views/request_leave_view/request_leave_view.dart';
 import '/views/request_list_view/request_list_view.dart';
@@ -27,6 +29,33 @@ import 'views/splash_view.dart';
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
+
+@pragma('vm:entry-point')
+triggerNotification({id, title, bod, payload}) {
+  Map body = {};
+  if (bod == String) {
+    body = jsonDecode(bod);
+  } else {
+    body = bod;
+  }
+  flutterLocalNotificationsPlugin.cancelAll();
+  flutterLocalNotificationsPlugin.show(
+      body['id'] is String ? int.parse(body['id']) : body['id'],
+      body['title'],
+      body['body'],
+      // DateTime.now().add(Duration(seconds: 10)),
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'id1',
+          'channelName',
+          priority: Priority.max,
+          importance: Importance.max,
+          visibility: NotificationVisibility.public,
+          // actions: [AndroidNotificationAction('01', 'Done')],
+        ),
+      ),
+      payload: 'chat_message');
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -142,12 +171,12 @@ class MyApp extends StatelessWidget {
             bodyMedium: TextStyle(color: cc.blackColor),
           ),
           radioTheme: DefaultThemes().radioThemeData(context),
-          androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
           elevatedButtonTheme: DefaultThemes().elevatedButtonTheme(context),
           outlinedButtonTheme: DefaultThemes().outlinedButtonTheme(context),
           inputDecorationTheme: DefaultThemes().inputDecorationTheme(context),
           checkboxTheme: DefaultThemes().checkboxTheme(context),
           appBarTheme: DefaultThemes().appBarTheme(context),
+          switchTheme: DefaultThemes().switchThemeData(),
           scaffoldBackgroundColor: Colors.white,
         ),
         home: SplashView(),

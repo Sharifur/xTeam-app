@@ -9,7 +9,7 @@ class CustomInkWell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: rounded ? BorderRadius.circular(10) : null,
+      borderRadius: BorderRadius.circular(rounded ? 10 : 0),
       child: Material(
           child: InkWell(
         onTap: onTap,

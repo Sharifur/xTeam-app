@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:office_attendence/services/profile_info_service.dart';
 import 'package:office_attendence/services/sign_in_service.dart';
+import 'package:office_attendence/views/login_view/components/remember_session.dart';
 import 'package:office_attendence/views/rive_animation.dart';
 import 'package:provider/provider.dart';
 import 'package:rive/rive.dart';
 
-import '../common/custom_common_button.dart';
-import '../common/field_title.dart';
-import '../helpers/constant_colors.dart';
-import '../helpers/empty_space_helper.dart';
-import 'home_view/home_view.dart';
+import '../../common/custom_common_button.dart';
+import '../../common/field_title.dart';
+import '../../helpers/constant_colors.dart';
+import '../../helpers/empty_space_helper.dart';
+import '../home_view/home_view.dart';
 
 class LoginView extends StatelessWidget {
   static const routeName = 'login_view';
@@ -20,6 +21,7 @@ class LoginView extends StatelessWidget {
   ValueNotifier isLoading = ValueNotifier(false);
   ValueNotifier obscurePass = ValueNotifier(true);
   FocusNode passFocused = FocusNode();
+  ValueNotifier<dynamic> rememberSession = ValueNotifier(false);
 
   SMIBool? _isChecking;
   SMIBool? _isHandsUp;
@@ -103,7 +105,7 @@ class LoginView extends StatelessWidget {
                     ),
                   ),
                   onFieldSubmitted: (value) async {
-                    tryLogin(context);
+                    tryLogin(context, rememberSession.value);
                   },
                   onTap: () {
                     debugPrint("raising hand".toString());
@@ -114,6 +116,7 @@ class LoginView extends StatelessWidget {
                 ),
               ),
               EmptySpaceHelper.emptyHight(10),
+              RememberSession(rememberSession: rememberSession),
               EmptySpaceHelper.emptyHight(10),
               ValueListenableBuilder(
                 valueListenable: isLoading,
@@ -121,7 +124,7 @@ class LoginView extends StatelessWidget {
                     btText: 'Login',
                     isLoading: value,
                     onPressed: () async {
-                      tryLogin(context);
+                      tryLogin(context, rememberSession.value);
                     }),
               ),
               EmptySpaceHelper.emptyHight(30),
@@ -132,13 +135,13 @@ class LoginView extends StatelessWidget {
     );
   }
 
-  tryLogin(BuildContext context) async {
+  tryLogin(BuildContext context, keepLogin) async {
     _isHandsUp?.value = false;
     _numLock?.value = 0.0;
     _isChecking?.value = false;
     isLoading.value = true;
     final result = await Provider.of<SignInService>(context, listen: false)
-        .signIn(emailController.text, passController.text);
+        .signIn(emailController.text, passController.text, keepLogin);
     if (result) {
       debugPrint("fetching profile info".toString());
       _triggerSuccess?.fire();

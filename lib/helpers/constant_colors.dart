@@ -30,4 +30,13 @@ class ConstantColors {
   final Color greyBorder2 = const Color(0xffEAECF0);
   final Color greyDots = const Color(0xffD8D8D8);
   final Color greytitle = const Color(0xff818181);
+
+  Color get black9 => const Color(0xffF2F4F7);
+  Color get black8 => const Color(0xffEAECF0);
+  Color get black7 => const Color(0xffD0D5DD);
+  Color get black6 => const Color(0xff98A2B3);
+  Color get black5 => const Color(0xff667085);
+  Color get black4 => const Color(0xff475467);
+  Color get black3 => const Color(0xff344054);
+  Color get black2 => const Color(0xff1D2939);
 }

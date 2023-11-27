@@ -6,6 +6,7 @@ import 'package:office_attendence/services/profile_info_service.dart';
 import 'package:provider/provider.dart';
 
 import '../../helpers/notification_hleper.dart';
+import '../../main.dart';
 import 'components/home_attendence.dart';
 import 'components/home_drawer.dart';
 
@@ -29,7 +30,7 @@ class HomeView extends StatelessWidget {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Got a message whilst in the foreground!');
       print('Message data: ${message.data}');
-      NotificationHelper().triggerNotification(
+      triggerNotification(
           id: DateTime.now().millisecond.toInt(), bod: message.data);
 
       if (message.notification != null) {
@@ -37,6 +38,7 @@ class HomeView extends StatelessWidget {
       }
     });
     // messaging.subscribeToTopic('all');
+    debugPrint((await messaging.getToken()).toString());
     final topic =
         "${Provider.of<ProfileInfoService>(context, listen: false).profileInfo?.userInfo?.id}";
     messaging.subscribeToTopic(topic);
@@ -47,8 +49,7 @@ class HomeView extends StatelessWidget {
     initiateNotification(context);
     ValueNotifier<bool> isLoading = ValueNotifier(false);
     final now = DateTime.now();
-    ValueNotifier<DateTime> date =
-        ValueNotifier(DateTime(now.year, now.month - 1));
+    ValueNotifier<DateTime> date = ValueNotifier(DateTime(now.year, now.month));
     isOffDay(DateTime.now());
     return Scaffold(
       drawer: HomeDrawer(),

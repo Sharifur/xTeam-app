@@ -8,6 +8,7 @@ class RequestLeaveServices with ChangeNotifier {
   final leaveOptions = ["Sick Leave", "Paid Leave", "Work From Home"];
   String? selectedOption = "Sick Leave";
   DateTime? selectedDay;
+  DateTimeRange? dateTimeRange;
 
   setLeaveOption(value) {
     if (value == selectedOption) {
@@ -25,6 +26,14 @@ class RequestLeaveServices with ChangeNotifier {
     notifyListeners();
   }
 
+  setDateRange(value) {
+    if (value == dateTimeRange) {
+      return;
+    }
+    dateTimeRange = value;
+    notifyListeners();
+  }
+
   disposeClass() {
     selectedOption = "Sick Leave";
     selectedDay = null;
@@ -33,9 +42,17 @@ class RequestLeaveServices with ChangeNotifier {
   }
 
   requestLeave() async {
-    final date = DateFormat("dd-MMMM-yyyy").format(selectedDay!);
+    debugPrint((dateTimeRange).toString());
+    debugPrint((selectedDay).toString());
+    final date =
+        DateFormat("dd-MMMM-yyyy").format(dateTimeRange?.start ?? selectedDay!);
+    final endDate = dateTimeRange?.end != null
+        ? DateFormat("dd-MMMM-yyyy").format(dateTimeRange!.end)
+        : "";
     final option = selectedOption!.replaceAll(" ", "-").toLowerCase();
-    final url = ApiRoutes.requestLeaveRoute + "?date_time=$date&type=$option";
+    final url = ApiRoutes.requestLeaveRoute +
+        "?date_time=$date&end_date=$endDate&type=$option";
+    debugPrint(url.toString());
     final responseData =
         await NetworkApiServices().postApi({}, url, "Request Leave");
 

@@ -154,4 +154,28 @@ class DefaultThemes {
             statusBarColor: Colors.transparent,
             statusBarIconBrightness: Brightness.dark),
       );
+
+  SwitchThemeData switchThemeData() => SwitchThemeData(
+        thumbColor: MaterialStateProperty.resolveWith<Color>(
+            (Set<MaterialState> states) {
+          if (states.contains(MaterialState.disabled)) {
+            return cc.primaryColor.withOpacity(.10);
+          }
+          return cc.pureWhite;
+        }),
+        trackColor: MaterialStateProperty.resolveWith<Color>(
+            (Set<MaterialState> states) {
+          if (!states.contains(MaterialState.selected)) {
+            return cc.black8;
+          }
+          return cc.primaryColor.withOpacity(.60);
+        }),
+        trackOutlineColor: MaterialStateProperty.resolveWith<Color>(
+            (Set<MaterialState> states) {
+          if (!states.contains(MaterialState.selected)) {
+            return cc.black8;
+          }
+          return cc.primaryColor.withOpacity(.40);
+        }),
+      );
 }

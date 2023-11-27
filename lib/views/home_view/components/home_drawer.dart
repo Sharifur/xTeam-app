@@ -5,7 +5,7 @@ import 'package:office_attendence/views/profile_edit_view/profile_edit_view.dart
 import 'package:office_attendence/views/request_list_view/request_list_view.dart';
 import 'package:office_attendence/views/salary_info_view/salary_info_view.dart';
 
-import '../../login_view.dart';
+import '../../login_view/login_view.dart';
 
 class HomeDrawer extends StatelessWidget {
   const HomeDrawer({

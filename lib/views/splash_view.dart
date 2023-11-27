@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:office_attendence/common/custom_preloader.dart';
 import 'package:office_attendence/services/profile_info_service.dart';
 import 'package:office_attendence/views/home_view/home_view.dart';
-import 'package:office_attendence/views/login_view.dart';
+import 'package:office_attendence/views/login_view/login_view.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

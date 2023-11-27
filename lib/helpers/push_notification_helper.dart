@@ -9,6 +9,7 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import '../main.dart';
 import 'notification_hleper.dart';
 
 class PushNotificationHelper {
@@ -20,10 +21,18 @@ class PushNotificationHelper {
   static String? selectedNotificationPayload;
 
   static staticFuctionOnForground(details) {
+    print(details.payload);
     selectedNotificationPayload = details.payload;
     selectNotificationStream.add('chat_message');
     print(details.payload);
   }
+}
+
+staticFuctionOnBackground(NotificationResponse details) {
+  print(details.payload);
+  // selectedNotificationPayload = details.payload;
+  // selectNotificationStream.add('chat_message');
+  print(details.payload);
 }
 
 bool isFlutterLocalNotificationsInitialized = false;
@@ -49,11 +58,12 @@ Future<void> configureLocalTimeZone() async {
   tz.setLocalLocation(tz.getLocation(timeZoneName));
 }
 
+@pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   await setupFlutterNotifications();
-
-  NotificationHelper().triggerNotification(
+  debugPrint(message.data.toString());
+  triggerNotification(
     id: DateTime.now().day,
     bod: message.data,
   );

@@ -112,8 +112,7 @@ class HomeAttendance extends StatelessWidget {
                                     IconButton(
                                         onPressed: date.value.year ==
                                                     now.year &&
-                                                date.value.month ==
-                                                    (now.month - 1)
+                                                date.value.month == (now.month)
                                             ? null
                                             : () async {
                                                 isLoading.value = true;
@@ -134,10 +133,10 @@ class HomeAttendance extends StatelessWidget {
                                     spacing: 16,
                                     runSpacing: 16,
                                     children: [
-                                      infoChips(
-                                          title: "Physical \nOffice",
-                                          amount: aProvider.getPhysicalOffice(),
-                                          color: aProvider.colors[0]),
+                                      // infoChips(
+                                      //     title: "Physical \nOffice",
+                                      //     amount: aProvider.getPhysicalOffice(),
+                                      //     color: aProvider.colors[0]),
                                       infoChips(
                                           title: "Holidays",
                                           amount: aProvider
@@ -165,7 +164,7 @@ class HomeAttendance extends StatelessWidget {
                                   ...aProvider.logs.keys.toList().map((key) {
                                     final element = aProvider.logs[key];
                                     final date =
-                                        DateFormat("dd-mm-yyyy").parse(key);
+                                        DateFormat("dd-MM-yyyy").parse(key);
                                     if (element['working_nature'] == null) {
                                       return SizedBox();
                                     }
@@ -185,7 +184,7 @@ class HomeAttendance extends StatelessWidget {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                DateFormat("EEEE, dd")
+                                                DateFormat("EEEE, dd,")
                                                         .format(date) +
                                                     "-" +
                                                     element['working_nature']!,

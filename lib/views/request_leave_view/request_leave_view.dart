@@ -15,6 +15,7 @@ class RequestLeaveView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ValueNotifier isLoading = ValueNotifier(false);
+    ValueNotifier<bool> selectMultipleDate = ValueNotifier(false);
     return Scaffold(
         appBar: AppBar(
           title: const Text("Request Leave"),
@@ -23,30 +24,72 @@ class RequestLeaveView extends StatelessWidget {
           child: ListView(
             padding: const EdgeInsets.all(20),
             children: [
-              FieldTitle("Select Date"),
-              Consumer<RequestLeaveServices>(
-                  builder: (context, rlProvider, child) {
-                return OutlinedButton(
-                    onPressed: () {
-                      final now = DateTime.now();
-                      showDatePicker(
-                        context: context,
-                        initialDate: now.add(Duration(days: 1)),
-                        firstDate: now.add(Duration(days: 1)),
-                        lastDate: now.add(const Duration(days: 15)),
-                        selectableDayPredicate: (day) =>
-                            day.weekday == 5 ? false : true,
-                      ).then((value) {
-                        if (value != null) {
-                          rlProvider.setDay(value);
-                        }
-                      });
-                    },
-                    child: Text(rlProvider.selectedDay == null
-                        ? "Select date"
-                        : DateFormat.yMMMMEEEEd()
-                            .format(rlProvider.selectedDay!)));
-              }),
+              ValueListenableBuilder(
+                  valueListenable: selectMultipleDate,
+                  builder: (context, md, c) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SwitchListTile(
+                          contentPadding: EdgeInsets.zero,
+                          value: md,
+                          onChanged: (newValue) {
+                            Provider.of<RequestLeaveServices>(context,
+                                    listen: false)
+                                .setDay(null);
+                            Provider.of<RequestLeaveServices>(context,
+                                    listen: false)
+                                .setDateRange(null);
+                            selectMultipleDate.value = !md;
+                          },
+                          title: FieldTitle(
+                            "Select multiple days",
+                          ),
+                        ),
+                        FieldTitle("Select Date"),
+                        Consumer<RequestLeaveServices>(
+                            builder: (context, rlProvider, child) {
+                          return SizedBox(
+                            width: double.infinity,
+                            child: OutlinedButton(
+                                onPressed: () {
+                                  final now = DateTime.now();
+                                  if (md) {
+                                    showDateRangePicker(
+                                      context: context,
+                                      firstDate: now,
+                                      lastDate:
+                                          now.add(const Duration(days: 15)),
+                                    ).then((value) {
+                                      if (value != null) {
+                                        rlProvider.setDateRange(value);
+                                      }
+                                    });
+                                    return;
+                                  }
+                                  showDatePicker(
+                                    context: context,
+                                    initialDate: now,
+                                    firstDate: now,
+                                    lastDate: now.add(const Duration(days: 15)),
+                                  ).then((value) {
+                                    if (value != null) {
+                                      rlProvider.setDay(value);
+                                    }
+                                  });
+                                },
+                                child: Text(rlProvider.selectedDay == null &&
+                                        rlProvider.dateTimeRange == null
+                                    ? "Select date"
+                                    : DateFormat.yMMMMEEEEd().format(
+                                            rlProvider.dateTimeRange?.start ??
+                                                rlProvider.selectedDay!) +
+                                        "${md ? (" - " + DateFormat.yMMMMEEEEd().format(rlProvider.dateTimeRange!.end)) : ""}")),
+                          );
+                        }),
+                      ],
+                    );
+                  }),
               FieldTitle("Select Option"),
               Consumer<RequestLeaveServices>(
                   builder: (context, rlProvider, child) {
@@ -65,8 +108,14 @@ class RequestLeaveView extends StatelessWidget {
                           context,
                           listen: false);
 
-                      if (rlProvider.selectedDay == null) {
+                      if (rlProvider.selectedDay == null &&
+                          rlProvider.dateTimeRange == null) {
                         showToast("Please select a date");
+                        return;
+                      }
+                      if (rlProvider.selectedDay?.day == DateTime.now().day &&
+                          rlProvider.selectedOption == 'Paid Leave') {
+                        showToast("Paid leave is not available for today");
                         return;
                       }
                       isLoading.value = true;

@@ -40,30 +40,4 @@ class NotificationHelper {
   //     },
   //   );
   // }
-
-  triggerNotification({id, title, bod, payload}) {
-    Map body = {};
-    if (bod == String) {
-      body = jsonDecode(bod);
-    } else {
-      body = bod;
-    }
-    flutterLocalNotificationsPlugin.cancelAll();
-    flutterLocalNotificationsPlugin.show(
-        body['id'] is String ? int.parse(body['id']) : body['id'],
-        body['title'],
-        body['body'],
-        // DateTime.now().add(Duration(seconds: 10)),
-        const NotificationDetails(
-          android: AndroidNotificationDetails(
-            'id1',
-            'channelName',
-            priority: Priority.max,
-            importance: Importance.max,
-            visibility: NotificationVisibility.public,
-            // actions: [AndroidNotificationAction('01', 'Done')],
-          ),
-        ),
-        payload: 'chat_message');
-  }
 }

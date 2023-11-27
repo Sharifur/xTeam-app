@@ -15,10 +15,10 @@ String get token {
   return _token;
 }
 
-setToken(token) async {
+setToken(token, {remember = true}) async {
   _token = token ?? '';
   final sp = await SharedPreferences.getInstance();
-  sp.setString("nutsflsd", token ?? '');
+  sp.setString("nutsflsd", remember ? token ?? '' : '');
 }
 
 // late AppStringService asProvider;
